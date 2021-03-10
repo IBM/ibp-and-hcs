@@ -1,0 +1,6 @@
+config:
+  hcs:
+    Operator:
+      Id: your testnet account ID
+      PrivateKey:
+        Key: your testnet account private key

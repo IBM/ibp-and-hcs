@@ -1,0 +1,4 @@
+FROM hyperledger/fabric-tools:2.2.0
+WORKDIR /opt/gopath
+ENV GOPATH=/opt/gopath
+RUN GO111MODULE=on go get github.com/mikefarah/yq/v3

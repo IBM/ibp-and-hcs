@@ -1,0 +1,5 @@
+Fabirc HCS Orderer {{ .Chart.AppVersion }} is successfully installed.
+
+To get the public IP of the orderer service
+
+ORDERER_IP="$(kubectl get service/{{ include "fabric-hcs-orderer.fullname" .}} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')"

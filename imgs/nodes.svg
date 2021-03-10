@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" class="gridIcon ibp-left-nav-icon svgIcon">
+  <title stroke="none" fill="#000000" stroke-width="1px">Nodes</title>
+  <g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1px">
+    <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1px">
+      <path d="M8 0H2a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 8H2V2h6v6zM22 0h-6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 8h-6V2h6v6zM8 14H2a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2zm0 8H2v-6h6v6zM22 14h-6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2zm0 8h-6v-6h6v6z" stroke="black" fill="black" stroke-width="1px"></path>
+    </g>
+    <path d="M-4-4h32v32H-4z" stroke="none" fill="none" stroke-width="1px"></path>
+  </g>
+</svg>

@@ -1,0 +1,97 @@
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          topologyKey: kubernetes.io/hostname
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: ordrer
+
+config:
+  hcs:
+    Operator:
+      Id: # operator account ID
+      PrivateKey:
+        Type: ed25519
+        Key: # operator private key
+  network: testnet
+
+fullnameOverride: ""
+
+image:
+  repository: xinatswirlds/fabric-orderer
+  pullPolicy: IfNotPresent
+  tag: # defaults to the charts app version
+
+imagePullSecrets: []
+
+nameOverride: ""
+
+network:
+  mainnet:
+    Nodes:
+      35_237_200_180:50211: 0.0.3
+      35_186_191_247:50211: 0.0.4
+      35_192_2_25:50211: 0.0.5
+      35_199_161_108:50211: 0.0.6
+      35_203_82_240:50211: 0.0.7
+      35_236_5_219:50211: 0.0.8
+      35_197_192_225:50211: 0.0.9
+      35_242_233_154:50211: 0.0.10
+      35_240_118_96:50211: 0.0.11
+      35_204_86_32:50211: 0.0.12
+    MirrorNodeAddress: hcs.mainnet.mirrornode.hedera.com:5600
+  testnet:
+    Nodes:
+      0_testnet_hedera_com:50211: 0.0.3
+      1_testnet_hedera_com:50211: 0.0.4
+      2_testnet_hedera_com:50211: 0.0.5
+      3_testnet_hedera_com:50211: 0.0.6
+    MirrorNodeAddress: hcs.testnet.mirrornode.hedera.com:5600
+
+nodeSelector: {}
+
+persistence:
+  accessModes:
+    - ReadWriteOnce
+  annotations: {}
+  size: 20Gi
+  storageClass: ""
+
+replicaCount: 1
+
+resources:
+  limits:
+    cpu: 1
+    memory: 1024Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+revisionHistoryLimit: 3
+
+service:
+  port: 7050
+  type: LoadBalancer
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+updateStrategy:
+  type: RollingUpdate

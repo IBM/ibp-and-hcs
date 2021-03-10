@@ -1,0 +1,135 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    {{- toYaml .Values.annotations | nindent 4 }}
+  labels:
+    {{- include "fabric-hcs-orderer.labels" . | nindent 4 }}
+  name: {{ include "fabric-hcs-orderer.fullname" . }}
+spec:
+  podManagementPolicy: {{ .Values.podManagementPolicy }}
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "fabric-hcs-orderer.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "fabric-hcs-orderer.fullname" . }}
+  updateStrategy:
+    {{- toYaml .Values.updateStrategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "fabric-hcs-orderer.selectorLabels" . | nindent 8 }}
+    spec:
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          env:
+            - name: FABRIC_LOGGING_SPEC
+              value: INFO
+            - name: ORDERER_GENERAL_BOOTSTRAPFILE
+              value: /var/hyperledger/orderer/orderer.genesis.block
+            - name: ORDERER_GENERAL_LOCALMSPID
+              value: OrdererMSP
+            - name: ORDERER_GENERAL_LOCALMSPDIR
+              value: /var/hyperledger/orderer/msp
+            - name: ORDERER_GENERAL_TLS_ENABLED
+              value: "true"
+            - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+              value: /var/hyperledger/orderer/tls/server.key
+            - name: ORDERER_GENERAL_TLS_CERTIFICATE
+              value: /var/hyperledger/orderer/tls/server.crt
+            - name: ORDERER_GENERAL_TLS_ROOTCAS
+              value: "[/var/hyperledger/orderer/tls/ca.crt]"
+            - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
+              value: /var/hyperledger/orderer/tls/server.crt
+            - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
+              value: /var/hyperledger/orderer/tls/server.key
+            - name: ORDERER_GENERAL_CLUSTER_ROOTCAS
+              value: "[/var/hyperledger/orderer/tls/ca.crt]"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          ports:
+            - containerPort: 7050
+              name: grpc
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: orderer-config-volume
+              mountPath: /etc/hyperledger/fabric
+              readOnly: true
+            - name: orderer-genesis-volume
+              mountPath: /var/hyperledger/orderer/orderer.genesis.block
+              readOnly: true
+              subPath: genesis.block
+            - name: orderer-msp-volume
+              mountPath: /var/hyperledger/orderer/msp/config.yaml
+              readOnly: true
+              subPath: config.yaml
+            - name: orderer-msp-volume
+              mountPath: /var/hyperledger/orderer/msp/admincerts/admin-cert.pem
+              readOnly: true
+              subPath: admin-cert.pem
+            - name: orderer-msp-volume
+              mountPath: /var/hyperledger/orderer/msp/cacerts/ca-cert.pem
+              readOnly: true
+              subPath: ca-cert.pem
+            - name: orderer-msp-volume
+              mountPath: /var/hyperledger/orderer/msp/keystore/priv_sk
+              readOnly: true
+              subPath: priv_sk
+            - name: orderer-msp-volume
+              mountPath: /var/hyperledger/orderer/msp/signcerts/cert.pem
+              readOnly: true
+              subPath: cert.pem
+            - name: orderer-msp-volume
+              mountPath: /var/hyperledger/orderer/msp/tlscacerts/tlsca-cert.pem
+              readOnly: true
+              subPath: tlsca-cert.pem
+            - name: orderer-tls-volume
+              mountPath: /var/hyperledger/orderer/tls
+              readOnly: true
+            - mountPath: /var/hyperledger/production/orderer
+              name: data
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      serviceAccountName: {{ include "fabric-hcs-orderer.serviceAccountName" . }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      volumes:
+        - name: orderer-config-volume
+          secret:
+            secretName: {{ include "fabric-hcs-orderer.fullname" . }}
+        - name: orderer-genesis-volume
+          secret:
+            secretName: orderer-genesis
+        - name: orderer-msp-volume
+          secret:
+            secretName: orderer-msp
+        - name: orderer-tls-volume
+          secret:
+            secretName: orderer-tls
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          {{- toYaml .Values.persistence.accessModes | nindent 10 }}
+        resources:
+          requests:
+            storage: "{{ .Values.persistence.size }}"
+        {{- if .Values.persistence.storageClass }}
+        storageClassName: "{{ .Values.persistence.storageClass }}"
+        {{- end }}

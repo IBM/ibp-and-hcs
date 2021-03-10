@@ -1,0 +1,9 @@
+apiVersion: v2
+appVersion: 2.2.0
+description: Fabirc HCS orderer integrates Hedera Consensus Service to provide transaction orderering to a Fabric network
+maintainers:
+  - name: Xin Li
+    email: xin.li@hedera.com
+name: fabric-hcs-orderer
+type: application
+version: 0.1.0
