@@ -1,19 +1,19 @@
 ## ibp-and-hcs
 
 At the time of writing, the guide works for IBM Blockchain Platform (hereafter referred to as IBP) v2.5.1 with Fabric v2.2.0. You may experience issues with a different version of IBP. The fabric network created in the guide has one peer organization with one peer node and
-one ordering organization with one orderer node.
+one ordering organization with one orderer node. The ordering service utilizes the [Hedera Consensus Service](https://hedera.com/consensus-service) (HCS).
 
 ### 1. Prerequisites
 
-1. IBM Cloud account
-1. Hedera Testnet account
-1. `docker`
-1. `docker-compose`
-1. `git`
-1. `go`
-1. `helm`
-1. `kubectl`
-1. `jq` and `yq`
+1. [IBM Cloud account](https://cloud.ibm.com/registration)
+1. [Hedera Testnet account](www.portal.hedera.com)
+1. [`docker`](https://docs.docker.com/get-docker/)
+1. [`docker-compose`](https://docs.docker.com/get-docker/)
+1. [`git`](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+1. [`go`](https://golang.org/dl/)
+1. [`helm`](https://helm.sh/docs/intro/install/)
+1. [`kubectl`](https://kubernetes.io/docs/tasks/tools/)
+1. [`jq`](https://stedolan.github.io/jq/download/) and [`yq`](https://kislyuk.github.io/yq/)
 1. A domain name reserved for the orderer. It's required to generate a SSL certificate for the orderer
    so as to pass SSL hostname verification. Some webistes provide free domain names, e.g., duckdns.org,
    which is sufficient for dev/test purpose.
